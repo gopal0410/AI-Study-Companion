@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { differenceInDays, startOfDay } from 'date-fns'
 import { ExamSetupScreen } from '@/components/study-app/exam-setup-screen'
 import { QuizScreen } from '@/components/study-app/quiz-screen'
 import { StudyPlanScreen } from '@/components/study-app/study-plan-screen'
@@ -80,6 +81,8 @@ export default function HomePage() {
     }
   }
 
+  const daysLeft = Math.max(0, differenceInDays(new Date(examState.examDate), startOfDay(new Date())))
+
   return (
     <div className="flex h-screen bg-background">
       {/* Sidebar */}
@@ -115,7 +118,7 @@ export default function HomePage() {
           <p className="text-xs text-muted-foreground mb-2">Active Exam</p>
           <div className="text-sm space-y-1">
             <p className="font-medium text-foreground">{examState.examName || 'New Exam'}</p>
-            <p className="text-muted-foreground">21 days left</p>
+            <p className="text-muted-foreground">{daysLeft} days left</p>
           </div>
         </div>
       </aside>
