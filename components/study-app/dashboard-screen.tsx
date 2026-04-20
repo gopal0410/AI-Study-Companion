@@ -107,65 +107,63 @@ export function DashboardScreen({ examState, onBackToSetup, onRetakeQuiz, isRege
   return (
     <div className="space-y-6">
       {/* Key metrics */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
-          <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground mb-2">Current Score</p>
-            <p className="text-3xl font-bold text-study-strong">{totalScore}%</p>
+          <CardContent className="pt-6 px-4">
+            <p className="text-xs md:text-sm text-muted-foreground mb-1 md:mb-2">Score</p>
+            <p className="text-2xl md:text-3xl font-bold text-study-strong">{totalScore}%</p>
             {totalQuizzes > 1 && (
-              <p className={`text-xs mt-2 ${isImproving ? 'text-green-600' : 'text-red-600'}`}>
-                {isImproving ? '↑' : '↓'} {Math.abs(scoreDiff)}% from last quiz
+              <p className={`text-[10px] md:text-xs mt-1 md:mt-2 ${isImproving ? 'text-green-600' : 'text-red-600'}`}>
+                {isImproving ? '↑' : '↓'} {Math.abs(scoreDiff)}%
               </p>
             )}
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground mb-2">Quizzes Completed</p>
-            <p className="text-3xl font-bold text-foreground">{totalQuizzes}</p>
-            <p className="text-xs text-muted-foreground mt-2">Personalized learning active</p>
+          <CardContent className="pt-6 px-4">
+            <p className="text-xs md:text-sm text-muted-foreground mb-1 md:mb-2">Quizzes</p>
+            <p className="text-2xl md:text-3xl font-bold text-foreground">{totalQuizzes}</p>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground mb-2">Study Hours</p>
-            <p className="text-3xl font-bold text-foreground">{totalHours}h</p>
-            <p className="text-xs text-muted-foreground mt-2">Estimated total</p>
+          <CardContent className="pt-6 px-4">
+            <p className="text-xs md:text-sm text-muted-foreground mb-1 md:mb-2">Hours</p>
+            <p className="text-2xl md:text-3xl font-bold text-foreground">{totalHours}h</p>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground mb-2">Days Until Exam</p>
-            <p className="text-3xl font-bold text-foreground">{daysUntilExam}</p>
-            <p className="text-xs text-muted-foreground mt-2">Target Date: {examState?.examDate}</p>
+          <CardContent className="pt-6 px-4">
+            <p className="text-xs md:text-sm text-muted-foreground mb-1 md:mb-2">Days Left</p>
+            <p className="text-2xl md:text-3xl font-bold text-foreground">{daysUntilExam}</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Row 1: Performance Trend and Subject Mastery */}
-      <div className="grid grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Performance Trend</CardTitle>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card className="w-full overflow-hidden">
+          <CardHeader className="p-4 md:p-6">
+            <CardTitle className="text-base md:text-lg">Performance Trend</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="h-[300px] w-full">
+          <CardContent className="p-2 md:p-6">
+            <div className="h-[250px] md:h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={performanceTrend}>
+                <LineChart data={performanceTrend} margin={{ right: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                  <XAxis dataKey="attempt" stroke="var(--muted-foreground)" />
-                  <YAxis stroke="var(--muted-foreground)" domain={[0, 100]} />
+                  <XAxis dataKey="attempt" stroke="var(--muted-foreground)" fontSize={10} />
+                  <YAxis stroke="var(--muted-foreground)" domain={[0, 100]} fontSize={10} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: 'var(--card)', border: '1px solid var(--border)' }}
+                    contentStyle={{ backgroundColor: 'var(--card)', border: '1px solid var(--border)', fontSize: '12px' }}
                     labelStyle={{ color: 'var(--foreground)' }}
                   />
-                  <Legend />
+                  <Legend wrapperStyle={{ fontSize: '12px' }} />
                   <Line
                     type="monotone"
                     dataKey="score"
                     stroke="#4CAF50"
                     strokeWidth={3}
-                    dot={{ fill: '#4CAF50', r: 6 }}
+                    dot={{ fill: '#4CAF50', r: 4 }}
+                    activeDot={{ r: 6 }}
                     name="Mastery %"
                   />
                 </LineChart>
@@ -174,19 +172,19 @@ export function DashboardScreen({ examState, onBackToSetup, onRetakeQuiz, isRege
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Subject Mastery</CardTitle>
+        <Card className="w-full overflow-hidden">
+          <CardHeader className="p-4 md:p-6">
+            <CardTitle className="text-base md:text-lg">Subject Mastery</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="h-[300px] w-full">
+          <CardContent className="p-2 md:p-6">
+            <div className="h-[250px] md:h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={finalSubjectData} layout="vertical">
+                <BarChart data={finalSubjectData} layout="vertical" margin={{ left: 10, right: 30 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                  <XAxis type="number" domain={[0, 100]} stroke="var(--muted-foreground)" />
-                  <YAxis dataKey="shortName" type="category" stroke="var(--muted-foreground)" width={50} />
+                  <XAxis type="number" domain={[0, 100]} stroke="var(--muted-foreground)" fontSize={10} />
+                  <YAxis dataKey="shortName" type="category" stroke="var(--muted-foreground)" width={40} fontSize={10} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: 'var(--card)', border: '1px solid var(--border)' }}
+                    contentStyle={{ backgroundColor: 'var(--card)', border: '1px solid var(--border)', fontSize: '12px' }}
                     labelStyle={{ color: 'var(--foreground)' }}
                     formatter={(value: any, name: any, props: any) => [`${value}%`, props.payload.name]}
                   />

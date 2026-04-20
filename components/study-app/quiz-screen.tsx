@@ -170,14 +170,14 @@ export function QuizScreen({ examState, setExamState, onContinue }: QuizScreenPr
   return (
     <div className="max-w-3xl space-y-6">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold">Attempt #{examState.quizAttempts + 1}</h3>
-        <Button variant="ghost" size="sm" onClick={handleRetake}>Reset Current Attempt</Button>
+        <h3 className="text-base md:text-lg font-semibold">Attempt #{examState.quizAttempts + 1}</h3>
+        <Button variant="ghost" size="sm" onClick={handleRetake} className="text-xs">Reset Attempt</Button>
       </div>
       {/* Progress bar */}
       <div className="space-y-2">
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between text-[10px] sm:text-sm">
           <span className="font-medium text-foreground">Question {currentQuestionIndex + 1} of {quizQuestions.length}</span>
-          <div className="flex gap-4">
+          <div className="flex gap-2 sm:gap-4">
             <span className="text-muted-foreground">Time: {elapsedTime}s</span>
             <span className="text-muted-foreground">{Math.round(progress)}%</span>
           </div>
@@ -187,15 +187,15 @@ export function QuizScreen({ examState, setExamState, onContinue }: QuizScreenPr
 
       {/* Question card */}
       <Card>
-        <CardHeader>
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <p className="text-sm text-muted-foreground mb-2">Question {currentQuestionIndex + 1} of {quizQuestions.length}</p>
-              <h2 className="text-xl font-bold text-foreground">{currentQuestion.question}</h2>
-              <p className="text-sm text-muted-foreground mt-2">{currentQuestion.topic}</p>
+        <CardHeader className="p-4 md:p-6">
+          <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <p className="text-[10px] md:text-sm text-muted-foreground mb-1 md:mb-2">Question {currentQuestionIndex + 1} of {quizQuestions.length}</p>
+              <h2 className="text-lg md:text-xl font-bold text-foreground leading-tight">{currentQuestion.question}</h2>
+              <p className="text-xs md:text-sm text-muted-foreground mt-2">{currentQuestion.topic}</p>
             </div>
-            <div className="flex flex-col items-end gap-2">
-              <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+            <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2 shrink-0">
+              <div className={`px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-medium ${
                 currentQuestion.difficulty === 'easy' ? 'bg-green-100 text-green-800' :
                 currentQuestion.difficulty === 'medium' ? 'bg-accent/20 text-accent-foreground' :
                 'bg-red-100 text-red-800'
@@ -203,14 +203,14 @@ export function QuizScreen({ examState, setExamState, onContinue }: QuizScreenPr
                 {currentQuestion.difficulty}
               </div>
               {showFeedback && results[currentQuestionIndex] && (
-                <div className="text-xs font-semibold text-primary">
+                <div className="text-[10px] md:text-xs font-semibold text-primary">
                   Mastery: {results[currentQuestionIndex]?.masteryScore.toFixed(2)}
                 </div>
               )}
             </div>
           </div>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="p-4 md:p-6 space-y-4">
           {/* Answer options */}
           <div className="space-y-3">
             {currentQuestion.options.map((option, idx) => {
@@ -224,7 +224,7 @@ export function QuizScreen({ examState, setExamState, onContinue }: QuizScreenPr
                   key={idx}
                   onClick={() => !showFeedback && handleSelectAnswer(idx)}
                   disabled={showFeedback}
-                  className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
+                  className={`w-full p-3 md:p-4 text-left rounded-lg border-2 transition-all ${
                     showCorrect ? 'border-study-strong bg-green-50 text-foreground' :
                     showIncorrect ? 'border-study-weak bg-red-50 text-foreground' :
                     isSelected && !showFeedback ? 'border-primary bg-primary/5' :
@@ -232,7 +232,7 @@ export function QuizScreen({ examState, setExamState, onContinue }: QuizScreenPr
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`w-6 h-6 rounded border-2 mt-0.5 flex items-center justify-center flex-shrink-0 ${
+                    <div className={`w-5 h-5 md:w-6 md:h-6 rounded border-2 mt-0.5 flex items-center justify-center flex-shrink-0 ${
                       showCorrect ? 'border-study-strong bg-study-strong text-white' :
                       showIncorrect ? 'border-study-weak bg-study-weak text-white' :
                       isSelected ? 'border-primary bg-primary text-primary-foreground' :
@@ -240,7 +240,7 @@ export function QuizScreen({ examState, setExamState, onContinue }: QuizScreenPr
                     }`}>
                       {showCorrect ? '✓' : showIncorrect ? '✗' : ''}
                     </div>
-                    <span className="font-medium">{option}</span>
+                    <span className="text-sm md:font-medium">{option}</span>
                   </div>
                 </button>
               )
@@ -249,25 +249,25 @@ export function QuizScreen({ examState, setExamState, onContinue }: QuizScreenPr
 
           {/* Feedback */}
           {showFeedback && (
-            <div className={`p-4 rounded-lg space-y-2 ${
+            <div className={`p-3 md:p-4 rounded-lg space-y-2 ${
               selectedAnswer === currentQuestion.correctAnswer
                 ? 'bg-green-50 border border-study-strong text-foreground'
                 : 'bg-red-50 border border-study-weak text-foreground'
             }`}>
-              <div className="flex justify-between items-center">
-                <p className="font-medium">
+              <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-1">
+                <p className="font-medium text-sm md:text-base">
                   {selectedAnswer === currentQuestion.correctAnswer ? '✓ Correct!' : '✗ Incorrect'}
                 </p>
-                <p className="text-xs text-muted-foreground">
-                  Time taken: {questionTimes[currentQuestionIndex]}s (Expected: {DIFFICULTY_CONFIG[currentQuestion.difficulty].expectedTime}s)
+                <p className="text-[10px] md:text-xs text-muted-foreground">
+                  Time: {questionTimes[currentQuestionIndex]}s (Expected: {DIFFICULTY_CONFIG[currentQuestion.difficulty].expectedTime}s)
                 </p>
               </div>
-              <p className="text-sm">
+              <p className="text-xs md:text-sm">
                 {selectedAnswer === currentQuestion.correctAnswer
-                  ? 'Great job! You selected the right answer.'
-                  : `The correct answer is: ${currentQuestion.options[currentQuestion.correctAnswer]}`}
+                  ? 'Great job!'
+                  : `Correct answer: ${currentQuestion.options[currentQuestion.correctAnswer]}`}
               </p>
-              <p className="text-sm italic border-t pt-2">
+              <p className="text-xs italic border-t pt-2 leading-relaxed">
                 {currentQuestion.explanation}
               </p>
             </div>
@@ -276,37 +276,33 @@ export function QuizScreen({ examState, setExamState, onContinue }: QuizScreenPr
       </Card>
 
       {/* Score summary */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         <Card>
-          <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground mb-1">Correct</p>
-            <p className="text-2xl font-bold text-study-strong">{correctCount}/{userAnswers.filter(a => a !== null).length}</p>
+          <CardContent className="pt-4 md:pt-6 px-3 md:px-6">
+            <p className="text-[10px] md:text-sm text-muted-foreground mb-1">Correct</p>
+            <p className="text-lg md:text-2xl font-bold text-study-strong">{correctCount}/{answeredCount}</p>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground mb-1">Accuracy</p>
-            <p className="text-2xl font-bold text-foreground">
-              {userAnswers.filter(a => a !== null).length > 0
-                ? Math.round((correctCount / userAnswers.filter(a => a !== null).length) * 100)
-                : 0}%
+          <CardContent className="pt-4 md:pt-6 px-3 md:px-6">
+            <p className="text-[10px] md:text-sm text-muted-foreground mb-1">Accuracy</p>
+            <p className="text-lg md:text-2xl font-bold text-foreground">
+              {answeredCount > 0 ? Math.round((correctCount / answeredCount) * 100) : 0}%
             </p>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground mb-1">Avg Time</p>
-            <p className="text-2xl font-bold text-foreground">
-              {userAnswers.filter(a => a !== null).length > 0
-                ? Math.round(questionTimes.reduce((a, b) => a + b, 0) / userAnswers.filter(a => a !== null).length)
-                : 0}s
+          <CardContent className="pt-4 md:pt-6 px-3 md:px-6">
+            <p className="text-[10px] md:text-sm text-muted-foreground mb-1">Avg Time</p>
+            <p className="text-lg md:text-2xl font-bold text-foreground">
+              {answeredCount > 0 ? Math.round(questionTimes.reduce((a, b) => a + b, 0) / answeredCount) : 0}s
             </p>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground mb-1">Mastery</p>
-            <p className="text-2xl font-bold text-primary">{averageMastery.toFixed(2)}</p>
+          <CardContent className="pt-4 md:pt-6 px-3 md:px-6">
+            <p className="text-[10px] md:text-sm text-muted-foreground mb-1">Mastery</p>
+            <p className="text-lg md:text-2xl font-bold text-primary">{averageMastery.toFixed(2)}</p>
           </CardContent>
         </Card>
       </div>

@@ -102,22 +102,22 @@ export function StudyPlanScreen({ examState, onContinue }: StudyPlanScreenProps)
     <div className="max-w-4xl space-y-6">
       {/* Progress summary */}
       <Card>
-        <CardHeader>
-          <CardTitle>Weekly Progress (Personalized)</CardTitle>
+        <CardHeader className="p-4 md:p-6">
+          <CardTitle className="text-base md:text-lg">Weekly Progress (Personalized)</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-3 gap-6">
+        <CardContent className="p-4 md:p-6 pt-0 md:pt-0">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             <div>
-              <p className="text-sm text-muted-foreground mb-2">Completed Sessions</p>
-              <p className="text-3xl font-bold text-foreground">{completedCount}/{totalSessions}</p>
+              <p className="text-[10px] md:text-sm text-muted-foreground mb-1 md:mb-2 uppercase tracking-wide">Sessions</p>
+              <p className="text-xl md:text-3xl font-bold text-foreground">{completedCount}/{totalSessions}</p>
+            </div>
+            <div className="hidden md:block">
+              <p className="text-[10px] md:text-sm text-muted-foreground mb-1 md:mb-2 uppercase tracking-wide">Strategy</p>
+              <p className="text-xl font-bold text-foreground">Adaptive</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground mb-2">Study Strategy</p>
-              <p className="text-xl font-bold text-foreground">Adaptive Learning</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground mb-2">Completion Rate</p>
-              <p className="text-3xl font-bold text-study-strong">{Math.round(progressPercent)}%</p>
+              <p className="text-[10px] md:text-sm text-muted-foreground mb-1 md:mb-2 uppercase tracking-wide">Completion</p>
+              <p className="text-xl md:text-3xl font-bold text-study-strong">{Math.round(progressPercent)}%</p>
             </div>
           </div>
           <div className="mt-4 w-full bg-border rounded-full h-2">
@@ -133,51 +133,51 @@ export function StudyPlanScreen({ examState, onContinue }: StudyPlanScreenProps)
       <div className="space-y-3">
         {weekData.map((dayData) => (
           <Card key={dayData.day}>
-            <CardHeader className="pb-3">
+            <CardHeader className="p-4 md:pb-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-semibold text-foreground">{dayData.day}</p>
-                  <p className="text-sm text-muted-foreground">{dayData.date}</p>
+                  <p className="font-semibold text-foreground text-sm md:text-base">{dayData.day}</p>
+                  <p className="text-xs text-muted-foreground">{dayData.date}</p>
                 </div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  {dayData.sessions.filter((s) => completedSessions.includes(s.id)).length}/{dayData.sessions.length} complete
+                <p className="text-xs font-medium text-muted-foreground">
+                  {dayData.sessions.filter((s) => completedSessions.includes(s.id)).length}/{dayData.sessions.length} done
                 </p>
               </div>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="p-2 md:p-6 pt-0 md:pt-0 space-y-2">
               {dayData.sessions.map((session) => {
                 const isCompleted = completedSessions.includes(session.id)
                 return (
                   <div
                     key={session.id}
-                    className={`flex items-start gap-4 p-4 rounded-lg border transition-all ${
+                    className={`flex items-start gap-3 md:gap-4 p-3 md:p-4 rounded-lg border transition-all ${
                       isCompleted
                         ? 'bg-green-50 border-study-strong/30'
-                        : 'bg-background border-border hover:border-border/80'
+                        : 'bg-background border-border'
                     }`}
                   >
                     <Checkbox
                       checked={isCompleted}
                       onCheckedChange={() => toggleSessionCompletion(session.id)}
-                      className="w-5 h-5 mt-0.5"
+                      className="w-4 h-4 md:w-5 md:h-5 mt-1 shrink-0"
                     />
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <span className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
+                        <span className="text-[8px] md:text-[10px] uppercase tracking-wider font-bold text-muted-foreground truncate max-w-[100px]">
                           {session.subject}
                         </span>
-                        <p className={`text-[10px] font-bold px-1.5 py-0.5 rounded border uppercase ${getPriorityStyles(session.priority)}`}>
+                        <p className={`text-[8px] md:text-[10px] font-bold px-1.5 py-0.5 rounded border uppercase shrink-0 ${getPriorityStyles(session.priority)}`}>
                           {session.priority}
                         </p>
                       </div>
-                      <p className={`font-medium ${isCompleted ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+                      <p className={`text-sm md:font-medium leading-tight ${isCompleted ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
                         {session.topic}
                       </p>
-                      <p className="text-xs text-muted-foreground italic mt-0.5">Focus: {session.subtopic}</p>
-                      <p className="text-xs font-medium text-muted-foreground mt-2">{session.time}</p>
+                      <p className="text-[10px] md:text-xs text-muted-foreground italic mt-1 line-clamp-1">Focus: {session.subtopic}</p>
+                      <p className="text-[10px] md:text-xs font-medium text-muted-foreground mt-2">{session.time}</p>
                     </div>
                     {isCompleted && (
-                      <div className="text-study-strong font-bold text-lg">✓</div>
+                      <div className="text-study-strong font-bold text-base md:text-lg shrink-0">✓</div>
                     )}
                   </div>
                 )
